@@ -126,6 +126,7 @@ function ProductMediaGallery(props) {
   };
 
   const onUploadError = (error) => {
+    console.error(error);
     enqueueSnackbar(error.reason || error.message, { variant: "error" });
   };
 

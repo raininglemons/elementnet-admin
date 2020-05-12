@@ -29,10 +29,14 @@ const formSchema = new SimpleSchema({
     type: Number,
     optional: true
   },
-  "compareAtPrice": Object,
+  "compareAtPrice": {
+    type: Object,
+    optional: true
+  },
   "compareAtPrice.amount": {
     type: Number,
-    optional: true
+    optional: true,
+    defaultValue: null
   }
 });
 
@@ -63,7 +67,7 @@ const VariantPricesForm = React.forwardRef((props, ref) => {
   } = useReactoForm({
     async onSubmit(formData) {
       setIsSubmitting(true);
-
+      console.log('IS SUBMITTING PRICE...');
       await onUpdateProductVariantPrices({
         variantId: currentVariant._id,
         variantPrices: formSchema.clean(formData)
