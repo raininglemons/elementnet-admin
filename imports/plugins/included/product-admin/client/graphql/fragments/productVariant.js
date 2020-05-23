@@ -42,6 +42,16 @@ export default gql`
     isTaxable
     taxCode
     taxDescription
+    cbdContent
+    volume
+    cannabinoidProfile
+    cbdInformation {
+      cbdContent
+      volume
+      cannabinoidProfile
+      capsules
+      flavour
+    }
   }
 `;
 

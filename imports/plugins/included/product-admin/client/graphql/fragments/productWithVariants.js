@@ -44,6 +44,25 @@ export default gql`
     title
     updatedAt
     vendor
+    cbdInformation {
+      type
+      vegan
+      guaranteedZeroThc
+      spectrumType
+      extractionMethod
+      base
+      hempSource
+      strain
+      delivery
+    }
+    content {
+      productInformation
+      brandInformation
+      howToUseThisItem
+      keyInformation
+      ingredients,
+      allergyInformation
+    }
     variants {
       ...ProductVariant
       options {
