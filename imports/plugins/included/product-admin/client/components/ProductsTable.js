@@ -90,6 +90,10 @@ function ProductsTable() {
       Cell: ({ row }) => <MediaCell row={row} />
     },
     {
+      Header: i18next.t("admin.productTable.header.vendor"),
+      accessor: "vendor"
+    },
+    {
       Header: i18next.t("admin.productTable.header.product"),
       accessor: "title"
     },

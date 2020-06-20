@@ -48,6 +48,8 @@ export default gql`
       type
       vegan
       guaranteedZeroThc
+      glutenFree
+      gmpCertified
       spectrumType
       extractionMethod
       base
@@ -56,12 +58,14 @@ export default gql`
       delivery
     }
     content {
-      productInformation
-      brandInformation
-      howToUseThisItem
-      keyInformation
-      ingredients,
-      allergyInformation
+      en {
+        productInformation
+        brandInformation
+        howToUseThisItem
+        keyInformation
+        ingredients,
+        allergyInformation
+      }
     }
     variants {
       ...ProductVariant

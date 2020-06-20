@@ -6,6 +6,7 @@ export default gql`
       nodes {
           _id
         title
+        vendor
         currentProductHash
         isVisible
         media {
