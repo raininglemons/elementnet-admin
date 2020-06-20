@@ -41,7 +41,8 @@ const formSchema = new SimpleSchema({
   },
   pageTitle: {
     type: String,
-    optional: true
+    optional: true,
+    defaultValue: null
   },
   vendor: {
     type: String,
