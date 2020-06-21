@@ -35,7 +35,7 @@ const formSchema = new SimpleSchema({
     type: String,
     optional: true
   },
-  permalink: {
+  slug: {
     type: String,
     optional: true
   },

@@ -50,6 +50,7 @@ export default gql`
       guaranteedZeroThc
       glutenFree
       gmpCertified
+      notAnimalTested
       spectrumType
       extractionMethod
       base
