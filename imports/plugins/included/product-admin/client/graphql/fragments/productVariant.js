@@ -48,7 +48,10 @@ export default gql`
     cbdInformation {
       cbdContent
       volume
-      cannabinoidProfile
+      cannabinoidProfile {
+        url
+        description
+      }
       capsules
       flavour
     }
