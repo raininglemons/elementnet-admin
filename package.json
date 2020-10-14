@@ -1,7 +1,7 @@
 {
   "name": "reaction-admin",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "3.0.0-beta.6",
+  "version": "3.0.0-beta.8",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -85,9 +85,9 @@
     "match-sorter": "^2.3.0",
     "mdi-material-ui": "^6.2.0",
     "meteor-node-stubs": "^0.4.1",
-    "moment": "^2.24.0",
-    "moment-timezone": "^0.5.23",
-    "mongodb": "^3.5.2",
+    "moment": "^2.25.3",
+    "moment-timezone": "^0.5.28",
+    "mongodb": "^3.5.7",
     "node-fetch": "^2.3.0",
     "nodemailer-wellknown": "^0.2.3",
     "notistack": "~0.9.5",
