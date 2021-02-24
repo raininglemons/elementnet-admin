@@ -13,6 +13,7 @@ import VariantDetailForm from "./VariantDetailForm";
 import VariantPricesForm from "./VariantPricesForm";
 import VariantTaxForm from "./VariantTaxForm";
 import VariantMediaForm from "./VariantMediaForm";
+import VariantMetadataForm from './VariantMetadataForm';
 
 // Register blocks
 
@@ -126,4 +127,11 @@ registerBlock({
   name: "VariantTaxForm",
   component: VariantTaxForm,
   priority: 50
+});
+
+registerBlock({
+  region: "VariantDetailMain",
+  name: "VariantMetadataForm",
+  component: VariantMetadataForm,
+  priority: 60
 });

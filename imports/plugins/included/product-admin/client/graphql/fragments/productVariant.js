@@ -30,6 +30,8 @@ export default gql`
         amount
       }
       price
+      costPrice
+      dropshipCostPrice
     }
     shop {
       _id
@@ -45,6 +47,7 @@ export default gql`
     cbdContent
     volume
     cannabinoidProfile
+    maxPerOrder
     cbdInformation {
       cbdContent
       volume
@@ -54,6 +57,7 @@ export default gql`
       }
       capsules
       flavour
+      allowCPC
     }
   }
 `;

@@ -10,6 +10,8 @@ export default gql`
             amount
           }
           price
+          costPrice
+          dropshipCostPrice
         }
       }
     }

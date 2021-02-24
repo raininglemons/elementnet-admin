@@ -24,6 +24,9 @@ query ordersQuery($shopIds: [ID], $filters: OrderFilterInput, $first: Connection
       }
       email
       status
+      profit {
+        displayAmount
+      }
     }
     totalCount
   }

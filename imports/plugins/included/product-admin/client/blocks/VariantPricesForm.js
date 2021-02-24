@@ -38,7 +38,15 @@ const formSchema = new SimpleSchema({
     type: Number,
     optional: true,
     defaultValue: null
-  }
+  },
+  "costPrice": {
+    type: Number,
+    optional: true
+  },
+  "dropshipCostPrice": {
+    type: Number,
+    optional: true
+  },
 });
 
 const validator = formSchema.getFormValidator();
@@ -123,6 +131,30 @@ const VariantPricesForm = React.forwardRef((props, ref) => {
                   label={i18next.t("productVariant.compareAtPrice")}
                   placeholder="0.00"
                   {...getInputProps("compareAtPrice.amount", muiOptions)}
+                />
+              </Grid>
+              <Grid item sm={6}>
+                <TextField
+                  type="numeric"
+                  className={classes.textField}
+                  error={hasErrors(["costPrice"])}
+                  fullWidth
+                  helperText={getFirstErrorMessage(["costPrice"]) || i18next.t("admin.helpText.costPrice")}
+                  label={i18next.t("productVariant.costPrice")}
+                  placeholder="0.00"
+                  {...getInputProps("costPrice", muiOptions)}
+                />
+              </Grid>
+              <Grid item sm={6}>
+                <TextField
+                  type="numeric"
+                  className={classes.textField}
+                  error={hasErrors(["dropshipCostPrice"])}
+                  fullWidth
+                  helperText={getFirstErrorMessage(["dropshipCostPrice"]) || i18next.t("admin.helpText.dropshipCostPrice")}
+                  label={i18next.t("productVariant.dropshipCostPrice")}
+                  placeholder="0.00"
+                  {...getInputProps("dropshipCostPrice", muiOptions)}
                 />
               </Grid>
             </Grid>

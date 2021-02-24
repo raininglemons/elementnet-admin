@@ -49,8 +49,10 @@ const useStyles = makeStyles((theme) => ({
 function OrderPrint(props) {
   const { order } = props;
   const classes = useStyles();
-  const { fulfillmentGroups } = order;
-  const orderDate = new Date(order.createdAt).toLocaleDateString("en-US");
+  const { fulfillmentGroups, payments } = order;
+  const orderDate = new Date(order.createdAt).toLocaleDateString();
+  const latestPayment = payments[payments.length - 1];
+  //console.log('Payments?', payments, latestPayment);
 
   return (
     <Fragment>
@@ -83,10 +85,21 @@ function OrderPrint(props) {
           <Grid container spacing={5}>
             <Grid item xs={12}>
               <Grid container>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} sm={6}>
                   <Typography variant="h1" paragraph>{order.shop.name}</Typography>
+                  <Typography variant="h4" style={{paddingBottom: '0.5em'}}>Registered office:</Typography>
+                  <Typography variant="body2">
+                    3rd Floor 86-90 Paul Street,<br />
+                    London,<br />
+                    EC2A 4NE
+                  </Typography>
+                  <p>&nbsp;</p>
+                  <Typography variant="h4" style={{paddingBottom: '0.5em'}}>Registered for VAT in England & Wales:</Typography>
+                  <Typography variant="body2">
+                    VAT Number 349 4625 70
+                  </Typography>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} sm={6}>
                   <Typography variant="h2" paragraph>Order Invoice</Typography>
                   <Typography variant="h4" display="inline">Order ID: </Typography><Typography variant="body1" display="inline">{order.referenceId}</Typography><br />
                   <Typography variant="h4" display="inline">Date: </Typography><Typography variant="body1" display="inline">{orderDate}</Typography>
@@ -97,13 +110,13 @@ function OrderPrint(props) {
 
             <Grid item xs={12}>
               <Grid container>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} sm={6}>
                   <Typography variant="h2" paragraph>Shipping address</Typography>
                   <Address address={fulfillmentGroups[0].data.shippingAddress} />
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} sm={6}>
                   <Typography variant="h2" paragraph>Billing address</Typography>
-                  <Address address={fulfillmentGroups[0].data.shippingAddress} />
+                  <Address address={latestPayment.billingAddress} />
                 </Grid>
               </Grid>
               <Divider className={classes.dividerSpacing} />
@@ -159,7 +172,7 @@ function OrderPrint(props) {
                           </Typography>
                           <Typography variant="body2" paragraph>
                             <span className={classes.extraEmphasisText}>Tracking number: </span>
-                            {fulfillmentGroup.trackingNumber || "Not available"}
+                            {fulfillmentGroup.trackingNumber || fulfillmentGroup.tracking || "Not available"}
                           </Typography>
                         </Grid>
                       </Grid>
@@ -248,7 +261,8 @@ function OrderPrint(props) {
                     {order.summary.fulfillmentTotal && order.summary.fulfillmentTotal.displayAmount}
                   </Typography>
                   <Typography variant="body1" align="right">
-                    {order.summary.taxTotal && order.summary.taxTotal.displayAmount}
+                    {/*order.summary.taxTotal && order.summary.taxTotal.displayAmount*/order.summary.total && `£${((order.summary.total.amount/1.2)*0.2).toFixed(2)}`
+                    }
                   </Typography>
                   <Typography variant="body1" align="right">
                     {order.summary.discountTotal && order.summary.discountTotal.displayAmount}

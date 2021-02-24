@@ -28,6 +28,7 @@ export const orderCommonFragment = gql`
             postal
             region
           }
+          weight
         }
       }
       displayStatus(language: $language)

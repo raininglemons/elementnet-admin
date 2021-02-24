@@ -128,6 +128,7 @@ function useVariantInventory(args = {}) {
     productVariantId: productVariantIdLocal = productVariantId,
     productVariantId: shopIdLocal = shopId
   }) => {
+    console.log('Trying to recalculate reserve quantity:', productIdLocal, productVariantIdLocal, shopIdLocal);
     try {
       await recalculateReservedSimpleInventory({
         variables: {
@@ -138,7 +139,11 @@ function useVariantInventory(args = {}) {
             },
             shopId: shopIdLocal
           }
-        }
+        },
+        refetchQueries: [{
+          query: getInventoryInfo,
+          variables: getInventoryInfoVariables
+        }]
       });
 
       enqueueSnackbar(i18next.t("productDetailEdit.updateProductFieldSuccess"), { variant: "success" });

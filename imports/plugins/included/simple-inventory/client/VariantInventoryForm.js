@@ -126,7 +126,7 @@ function VariantInventoryForm() {
               disabled={!isEnabled}
               variant="text"
               onClick={() => {
-                onRecalculateReservedSimpleInventory();
+                onRecalculateReservedSimpleInventory({});
               }}
               title="Recalculate"
             >{i18next.t("productVariant.recalculateReservedInventory")}</Button>

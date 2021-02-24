@@ -287,7 +287,7 @@ function useProduct(args = {}) {
     variantId: variantIdLocal,
     shopId: shopIdLocal = shopId
   }) => {
-    const { price, compareAtPrice } = variantPricesLocal;
+    const { costPrice, dropshipCostPrice, price, compareAtPrice } = variantPricesLocal;
     try {
       await updateProductVariantPrices({
         variables: {
@@ -295,6 +295,8 @@ function useProduct(args = {}) {
             shopId: shopIdLocal,
             prices: {
               price,
+              costPrice,
+              dropshipCostPrice,
               compareAtPrice: compareAtPrice.amount
             },
             variantId: variantIdLocal

@@ -8,16 +8,39 @@ import { useApolloClient } from "@apollo/react-hooks";
 import useCurrentShopId from "/imports/client/ui/hooks/useCurrentShopId";
 import { Box, Card, CardHeader, CardContent, makeStyles } from "@material-ui/core";
 import ordersQuery from "../graphql/queries/orders";
+import royalMailCsv from "../graphql/queries/royalMailCsv";
 import { formatDateRangeFilter } from "../../client/helpers";
 import OrderDateCell from "./DataTable/OrderDateCell";
 import OrderIdCell from "./DataTable/OrderIdCell";
 import OrderTotalCell from "./DataTable/OrderTotalCell";
+import OrderRevenueCell from "./DataTable/OrderRevenueCell";
 
 const useStyles = makeStyles({
   card: {
     overflow: "visible"
   }
 });
+
+/**
+ * Fires off a download of some csv content. Filename optional
+ * @param csv
+ * @param fileName
+ */
+const downloadCsv = (csv, fileName) => {
+  const a = document.createElement('a');
+  const csvFile = new Blob(["\uFEFF" + csv], {type: 'text/csv;charset=utf-8'});
+  a.href = window.URL.createObjectURL(csvFile);
+  a.download = fileName || 'orders.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+
+const paymentPriority = [
+  "completed",
+  "error",
+  "created"
+];
 
 /**
  * @name OrdersTable
@@ -64,7 +87,8 @@ function OrdersTable() {
     },
     {
       Header: i18next.t("admin.table.headers.payment"),
-      accessor: (row) => row.payments[0].status,
+      accessor: (row) => row.payments.map(({ status }) => status).sort((a, b) => paymentPriority.indexOf(a) - paymentPriority.indexOf(b))[0],
+        // row.payments[0].status;
       id: "paymentStatus",
       // eslint-disable-next-line react/no-multi-comp,react/display-name,react/prop-types
       Cell: ({ row }) => <Fragment>{i18next.t(`admin.table.paymentStatus.${row.values.paymentStatus}`)}</Fragment>,
@@ -73,7 +97,10 @@ function OrdersTable() {
         options: [
           { label: i18next.t("admin.table.paymentStatus.completed"), value: "completed" },
           { label: i18next.t("admin.table.paymentStatus.created"), value: "created" }
-        ]
+        ],
+        /*value: [
+          'completed'
+        ]/**/
       })
     },
     {
@@ -101,6 +128,13 @@ function OrdersTable() {
       Header: () => <Box textAlign="right">{i18next.t("admin.table.headers.total")}</Box>,
       // eslint-disable-next-line react/no-multi-comp,react/display-name,react/prop-types
       Cell: ({ row }) => <OrderTotalCell row={row} />
+    },
+    {
+      accessor: "profit.displayAmount",
+      // eslint-disable-next-line react/no-multi-comp,react/display-name,react/prop-types
+      Header: () => <Box textAlign="right">{i18next.t("admin.table.headers.profit")}</Box>,
+      // eslint-disable-next-line react/no-multi-comp,react/display-name,react/prop-types
+      Cell: ({ row }) => <OrderRevenueCell row={row} />
     },
     {
       Header: i18next.t("admin.table.headers.date"),
@@ -170,6 +204,24 @@ function OrdersTable() {
     "filterChipValue.last30": i18next.t("admin.table.filter.last30")
   }), []);
 
+  const options = useMemo(() => [{
+    label: i18next.t("admin.table.bulkActions.exportToRoyalMail"),
+    isDisabled: false,
+    onClick: async () => {
+      const { data: { fulfillmentGroupsForRoyalMailCSV: { csvContent } }, error } = await apolloClient.query({
+        query: royalMailCsv,
+        variables: {
+          shopIds: [ shopId ]
+        },
+        fetchPolicy: "network-only"
+      });
+
+      if (downloadCsv) {
+        downloadCsv(csvContent, `orders-${(new Date).toLocaleDateString().replace(/\//g, '-')}.csv`);
+      }
+    }
+  }], [apolloClient, shopId]);
+
   const dataTableProps = useDataTable({
     columns,
     data: tableData,
@@ -177,7 +229,20 @@ function OrdersTable() {
     pageCount,
     onFetchData,
     onRowClick,
-    getRowId: (row) => row.referenceId
+    getRowId: (row) => row.referenceId,
+    actionMenuProps: { options },
+    initialState: {
+      pageIndex: 0,
+      filters: [{
+          id: "status",
+          value: "processing"
+        }, {
+          id: "paymentStatus",
+          value: [
+            "completed"
+          ]
+        }]
+    }
   });
 
   const classes = useStyles();

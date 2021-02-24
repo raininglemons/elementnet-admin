@@ -16,6 +16,7 @@ import ConfirmButton from "/imports/client/ui/components/ConfirmButton";
 import cancelOrderItemMutation from "../graphql/mutations/cancelOrderItem";
 import OrderCardFulfillmentGroupItem from "./OrderCardFulfillmentGroupItem";
 import OrderCardFulfillmentGroupTrackingNumber from "./OrderCardFulfillmentGroupTrackingNumber";
+import OrderCardFulfillmentGroupWeight from "./OrderCardFulfillmentGroupWeight";
 import OrderCardFulfillmentGroupStatusButton from "./OrderCardFulfillmentGroupStatusButton";
 import OrderStatusChip from "./OrderStatusChip";
 
@@ -166,7 +167,7 @@ class OrderCardFulfillmentGroups extends Component {
 
     return fulfillmentGroups.map((fulfillmentGroup, index) => {
       const currentGroupCount = index + 1;
-      const { data: { shippingAddress }, displayStatus, status } = fulfillmentGroup;
+      const { data: { shippingAddress }, displayStatus, status, type } = fulfillmentGroup;
 
       return (
         <Grid container key={fulfillmentGroup._id} spacing={4}>
@@ -232,6 +233,12 @@ class OrderCardFulfillmentGroups extends Component {
                           {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.carrier} - {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.displayName} {/* eslint-disable-line */}
                         </Typography>
                       </Grid>
+                      { type === 'shipping' && <Grid item xs={12} md={12}>
+                        <Typography paragraph variant="h4">
+                          {i18next.t("order.weight", "Parcel Weight")}
+                        </Typography>
+                        <OrderCardFulfillmentGroupWeight orderId={order._id} fulfillmentGroup={fulfillmentGroup} {...this.props} />
+                      </Grid>}
                       <Grid item xs={12} md={12}>
                         <Typography paragraph variant="h4">
                           {i18next.t("order.trackingNumber", "Tracking number")}
